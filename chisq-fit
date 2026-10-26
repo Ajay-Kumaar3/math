@@ -1,0 +1,41 @@
+# Observed frequencies
+observed <- c(42, 48, 53, 45, 56, 56)
+
+# Number of faces
+k <- 6
+n <- sum(observed)
+alpha <- 0.05
+
+# H0: Die is unbiased
+# H1: Die is biased
+
+# Expected frequencies for a fair die
+expected <- rep(n / k, k)
+
+cat("Observed frequencies =", observed, "\n")
+cat("Expected frequencies =", expected, "\n")
+
+# Chi-square test statistic
+chi_stat <- sum((observed - expected)^2 / expected)
+cat("Chi-square statistic =", chi_stat, "\n")
+
+# Degrees of freedom
+df <- k - 1
+cat("Degrees of freedom =", df, "\n")
+
+# Critical value
+critical_value <- qchisq(1 - alpha, df)
+cat("Critical value =", critical_value, "\n")
+
+# P-value
+p_value <- pchisq(chi_stat, df, lower.tail = FALSE)
+cat("P-value =", p_value, "\n")
+
+# Decision
+if (p_value < alpha) {
+  cat("Reject H0\n")
+  cat("The die is biased.\n")
+} else {
+  cat("Fail to reject H0\n")
+  cat("There is insufficient evidence that the die is biased.\n")
+}

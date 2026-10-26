@@ -1,0 +1,64 @@
+# Step 1: Enter the given data
+Row <- factor(rep(1:5, each = 5))
+Column <- factor(rep(1:5, times = 5))
+
+Treatment <- factor(c(
+  "A", "B", "C", "D", "E",
+  "B", "C", "D", "E", "A",
+  "C", "D", "E", "A", "B",
+  "D", "E", "A", "B", "C",
+  "E", "A", "B", "C", "D"
+))
+
+Productivity <- c(
+  42, 48, 45, 50, 44,
+  46, 51, 47, 43, 49,
+  50, 44, 52, 46, 48,
+  45, 49, 51, 47, 53,
+  47, 50, 46, 52, 48
+)
+
+# Step 2: Combine into a data frame
+data <- data.frame(Row, Column, Treatment, Productivity)
+
+# Step 3: Hypotheses
+# H0: No significant row effect
+# H1: Significant row effect
+# H0: No significant column effect
+# H1: Significant column effect
+# H0: All treatment means are equal
+# H1: At least one treatment mean differs
+
+# Step 4: Perform Latin Square Design ANOVA
+fit <- aov(Productivity ~ Row + Column + Treatment, data = data)
+
+# Step 5: Display ANOVA table
+result <- summary(fit)
+print(result)
+
+# Step 6: Extract p-values
+p_values <- result[[1]][["Pr(>F)"]]
+
+# Step 7: Significance level
+alpha <- 0.05
+
+# Step 8: Test row effect
+if (p_values[1] < alpha) {
+  print("Reject H0: Significant row effect.")
+} else {
+  print("Fail to reject H0: No significant row effect.")
+}
+
+# Step 9: Test column effect
+if (p_values[2] < alpha) {
+  print("Reject H0: Significant column effect.")
+} else {
+  print("Fail to reject H0: No significant column effect.")
+}
+
+# Step 10: Test treatment effect
+if (p_values[3] < alpha) {
+  print("Reject H0: Significant treatment effect.")
+} else {
+  print("Fail to reject H0: No significant treatment effect.")
+}

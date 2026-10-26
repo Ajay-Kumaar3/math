@@ -1,0 +1,46 @@
+# Observed frequency table
+observed <- matrix(c(80, 40,
+                     60, 70),
+                   nrow = 2, byrow = TRUE)
+
+# Display observed frequencies
+print(observed)
+
+# Significance level
+alpha <- 0.05
+
+# Hypotheses
+# H0: Gender and online learning preference are independent
+# H1: Gender and online learning preference are associated
+
+# Perform Chi-square test of independence
+result <- chisq.test(observed, correct = FALSE)
+
+# Expected frequencies
+cat("Expected frequencies:\n")
+print(result$expected)
+
+# Chi-square test statistic
+chi_stat <- result$statistic
+cat("Chi-square statistic =", chi_stat, "\n")
+
+# Degrees of freedom
+df <- result$parameter
+cat("Degrees of freedom =", df, "\n")
+
+# Critical value
+critical_value <- qchisq(1 - alpha, df)
+cat("Critical value =", critical_value, "\n")
+
+# P-value
+p_value <- pchisq(chi_stat, df, lower.tail = FALSE)
+cat("P-value =", p_value, "\n")
+
+# Decision and conclusion
+if (p_value < alpha) {
+  cat("Reject H0\n")
+  cat("Gender and online learning preference are associated.\n")
+} else {
+  cat("Fail to reject H0\n")
+  cat("Insufficient evidence of an association between gender and online learning preference.\n")
+}

@@ -1,0 +1,48 @@
+# Given values
+x1 <- 320
+n1 <- 500
+x2 <- 348
+n2 <- 600
+alpha <- 0.05
+
+# a) Calculate sample proportions
+p1 <- x1 / n1
+p2 <- x2 / n2
+
+cat("Sample proportion College A =", p1, "\n")
+cat("Sample proportion College B =", p2, "\n")
+
+# b) Hypotheses
+# H0: p1 = p2
+# H1: p1 != p2
+
+# c) Calculate pooled sample proportion
+p_pool <- (x1 + x2) / (n1 + n2)
+
+cat("Pooled proportion =", p_pool, "\n")
+
+# d) Calculate two-sample proportion Z statistic
+SE <- sqrt(p_pool * (1 - p_pool) * (1/n1 + 1/n2))
+z <- (p1 - p2) / SE
+
+cat("Z test statistic =", z, "\n")
+
+# e) Determine two-tailed critical values
+critical_value <- qnorm(1 - alpha/2)
+
+cat("Lower critical value =", -critical_value, "\n")
+cat("Upper critical value =", critical_value, "\n")
+
+# f) Calculate two-tailed p-value
+p_value <- 2 * pnorm(-abs(z))
+
+cat("P-value =", p_value, "\n")
+
+# g) Decision and conclusion
+if (p_value < alpha) {
+  cat("Reject H0\n")
+  cat("The proportions differ significantly between the two colleges.\n")
+} else {
+  cat("Fail to reject H0\n")
+  cat("There is insufficient evidence of a significant difference between the proportions.\n")
+}

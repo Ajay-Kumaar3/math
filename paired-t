@@ -1,0 +1,51 @@
+# Given data
+before <- c(48, 52, 45, 60, 55, 49, 63, 51, 58, 46)
+after  <- c(55, 58, 50, 65, 61, 54, 68, 57, 62, 52)
+
+alpha <- 0.05
+
+# a) Hypotheses
+# H0: mu_difference = 0
+# H1: mu_difference > 0
+# Difference = After - Before
+
+# b) Calculate paired differences
+d <- after - before
+cat("Differences =", d, "\n")
+cat("Mean difference =", mean(d), "\n")
+
+# c) Perform paired t-test
+result <- t.test(before, after,
+                 paired = TRUE,
+                 alternative = "less",
+                 conf.level = 0.95)
+
+# d) Test statistic and p-value
+t_stat <- result$statistic
+p_value <- result$p.value
+df <- result$parameter
+
+cat("T test statistic =", t_stat, "\n")
+cat("Degrees of freedom =", df, "\n")
+cat("P-value =", p_value, "\n")
+
+# Critical value (right-tailed)
+critical_value <- qt(1 - alpha, df)
+cat("Critical value =", critical_value, "\n")
+
+# e) 95% confidence interval for mean difference
+ci_result <- t.test(d, mu = 0,
+                    alternative = "two.sided",
+                    conf.level = 0.95)
+
+cat("95% Confidence interval for After - Before:\n")
+print(ci_result$conf.int)
+
+# f) Decision
+if (p_value < alpha) {
+  cat("Reject H0\n")
+  cat("Coaching significantly improved students' marks.\n")
+} else {
+  cat("Fail to reject H0\n")
+  cat("Insufficient evidence that coaching improved students' marks.\n")
+}

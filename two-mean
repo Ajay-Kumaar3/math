@@ -1,0 +1,44 @@
+# a) Load and display dataset
+data(mtcars)
+
+# b) Separate observations into two groups
+auto <- mtcars$mpg[mtcars$am == 0]
+manual <- mtcars$mpg[mtcars$am == 1]
+
+cat("Automatic mean =", mean(auto), "\n")
+cat("Manual mean =", mean(manual), "\n")
+
+# c) Hypotheses
+# H0: mu1 = mu2
+# H1: mu1 != mu2
+
+alpha <- 0.05
+
+# d) Two-sample t-test
+result <- t.test(auto, manual)
+
+t_stat <- result$statistic
+cat("T test statistic =", t_stat, "\n")
+
+# e) Critical values
+df <- result$parameter
+critical_value <- qt(1 - alpha / 2, df)
+
+cat("Lower critical value =", -critical_value, "\n")
+cat("Upper critical value =", critical_value, "\n")
+
+# f) P-value
+p_value <- result$p.value
+cat("P-value =", p_value, "\n")
+
+# g) 95% Confidence interval
+cat("95% Confidence interval =", result$conf.int, "\n")
+
+# h) Decision and conclusion
+if (p_value < alpha) {
+  cat("Reject H0\n")
+  cat("There is a significant difference between the mean mileages.\n")
+} else {
+  cat("Fail to reject H0\n")
+  cat("There is insufficient evidence of a significant difference.\n")
+}

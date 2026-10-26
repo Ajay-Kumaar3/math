@@ -1,0 +1,46 @@
+# 1. Enter the given data
+data <- data.frame(
+  SalePrice = c(200000, 250000, 180000, 300000, 230000, 350000),
+  GrLivArea = c(1500, 1800, 1300, 2200, 1700, 2500),
+  OverallQual = c(6, 7, 5, 8, 6, 9),
+  GarageCars = c(2, 2, 1, 3, 2, 3)
+)
+
+# 3. Check missing values
+colSums(is.na(data))
+
+# 4. Fit multiple linear regression model
+fit <- lm(SalePrice ~ GrLivArea + OverallQual + GarageCars,
+          data = data)
+
+# 6. Display coefficients
+b <- coef(fit)
+print(b)
+
+# 7. Write regression equation
+cat("SalePrice =", b[1], "+", b[2], "* GrLivArea +",
+    b[3], "* OverallQual +", b[4], "* GarageCars\n")
+
+# 9. Significant predictors (p-value < 0.05)
+summary_fit <- summary(fit)
+p_values <- summary_fit$coefficients[, 4]
+print(p_values)
+
+print(names(p_values[p_values < 0.05 &
+                     names(p_values) != "(Intercept)"]))
+
+# Predict sale price
+predicted_price <- b[1] +
+  b[2] * 1800 +
+  b[3] * 7 +
+  b[4] * 2
+
+cat("Predicted Sale Price:", predicted_price, "\n")
+
+# 12. Actual vs predicted plot
+plot(fitted(fit), data$SalePrice,
+     xlab = "Predicted Sale Price",
+     ylab = "Actual Sale Price",
+     main = "Actual vs Predicted Prices")
+
+abline(a = 0, b = 1, col = "red")

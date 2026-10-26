@@ -1,0 +1,37 @@
+# Exercise 11 - Question 1
+# One-way ANOVA using Completely Randomized Design (CRD)
+
+# Step 1: Enter the yield data for each fertilizer
+A <- c(20, 22, 19, 21, 23)
+B <- c(25, 27, 24, 26, 28)
+C <- c(18, 20, 21, 19, 22)
+D <- c(22, 24, 23, 25, 21)
+
+# Step 2: Combine the data into a data frame
+group <- data.frame(A, B, C, D)
+print(group)
+
+# Step 3: Convert wide format into long format
+stgr <- stack(group)
+print(stgr)
+
+# Step 4: Perform one-way ANOVA
+fit <- aov(values ~ ind, data = stgr)
+
+# Step 5: Display the ANOVA table
+result <- summary(fit)
+print(result)
+
+# Step 6: Extract the p-value
+p_value <- result[[1]][["Pr(>F)"]][1]
+print(p_value)
+
+# Step 7: Set significance level
+alpha <- 0.05
+
+# Step 8: Make the decision
+if (p_value < alpha) {
+  print("Reject H0: Significant difference exists among mean yields.")
+} else {
+  print("Fail to reject H0: Insufficient evidence of a significant difference.")
+}

@@ -1,0 +1,35 @@
+# 1. Create a data frame manually
+data <- data.frame(
+  height = women$height,
+  weight = women$weight
+)
+
+# 2. Display the dataset
+print(data)
+
+# 3. Fit the linear regression model
+fit <- lm(weight ~ height, data = data)
+
+# 4. Display regression summary
+summary(fit)
+
+# 5. Get intercept and slope
+a <- coef(fit)[1]
+b <- coef(fit)[2]
+
+# 6. Display regression equation
+cat("weight =", a, "+", b, "* Height\n")
+
+# 7. Predict weight for height = 65
+predicted_weight <- a + b * 65
+print(predicted_weight)
+
+# 8. Draw scatter plot
+plot(data$height, data$weight,
+     main = "Height vs Weight",
+     xlab = "Height (inches)",
+     ylab = "Weight (pounds)",
+     pch = 19)
+
+# 9. Add regression line
+abline(fit, col = "red", lwd = 2)

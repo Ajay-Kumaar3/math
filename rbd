@@ -1,0 +1,51 @@
+# Step 1: Enter sales data for each region
+North <- c(12, 15, 14, 16)
+South <- c(10, 13, 12, 15)
+East <- c(14, 16, 15, 18)
+
+# Step 2: Combine the data into a data frame
+Group <- data.frame(North, South, East)
+print(Group)
+
+# Step 3: Convert the data frame into a matrix,
+# transpose it, and combine all observations into one vector
+Sales <- c(t(as.matrix(Group)))
+print(Sales)
+
+# Step 4: Create region labels
+Regions <- factor(rep(c("North", "South", "East"), times = 4))
+
+# Step 5: Create salesman labels
+Salesmen <- factor(rep(c("I", "II", "III", "IV"), each = 3))
+
+# Step 6: Combine the observations and labels
+data <- data.frame(Sales, Regions, Salesmen)
+print(data)
+
+# Step 7: Perform Randomized Block Design ANOVA
+fit <- aov(Sales ~ Regions + Salesmen, data = data)
+
+# Step 8: Display the ANOVA table
+result <- summary(fit)
+print(result)
+
+# Step 9: Extract the p-values for both factors
+p_values <- result[[1]][["Pr(>F)"]]
+print(p_values)
+
+# Step 10: Set significance level
+alpha <- 0.05
+
+# Step 11: Check the effect of regions
+if (p_values[1] < alpha) {
+  print("Reject H0: Significant difference exists among regions.")
+} else {
+  print("Fail to reject H0: Insufficient evidence of a significant difference among regions.")
+}
+
+# Check the effect of salesmen
+if (p_values[2] < alpha) {
+  print("Reject H0: Significant difference exists among salesmen.")
+} else {
+  print("Fail to reject H0: Insufficient evidence of a significant difference among salesmen.")
+}
